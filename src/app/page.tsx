@@ -1,4 +1,8 @@
-export default function HomePage() {
+import { db } from "~/server/db";
+
+export default async function HomePage() {
+  const posts = await db.query.posts.findMany();
+  console.log(posts);
   const mockUrls = [
     "https://nojaa5ntrm.ufs.sh/f/q774PQV5VEswb0s9HEQX06DlCckLthAabznS1QTsmIx895yY",
     "https://nojaa5ntrm.ufs.sh/f/q774PQV5VEswxFG6Jaqoalj0mWU3vkIqFTLy6szbiK4C9BQw",
@@ -13,13 +17,15 @@ export default function HomePage() {
   return (
     <main className="">
       <div className="flex flex-wrap gap-4">
-        {[...mockImages, ...mockImages, ...mockImages].map((image) => (
-          <div key={image.id} className="w-48">
+        {posts.map((post, index) => (
+          <div key={index}>{post.name}</div>
+        ))}
+        {[...mockImages, ...mockImages, ...mockImages].map((image, index) => (
+          <div key={image.id + "-" + index} className="w-48">
             <img src={image.url} />
           </div>
         ))}
       </div>
-      hello (gallery in progress)
     </main>
   );
 }
